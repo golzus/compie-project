@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const connectDB = require("./config/dbConn");
+const corsOptions = require("./config/corsOption");
 
 const app = express();
 
