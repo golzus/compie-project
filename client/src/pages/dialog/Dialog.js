@@ -55,8 +55,8 @@ if(!dialogs)return <h1>loading...</h1>
     <div className="dialog-container">
       <div className="img_container">
 {    dialogs[0].imageId.title&&    <h1>{dialogs[0].imageId.title}</h1> 
-}      {dialogs &&   <img src={`${dialogs[0].imageId.path}.JPG`} alt="dialog-image" />
-}   
+}      {dialogs &&   <img src={`${Number(dialogs[0].imageId.path)}.JPG`} alt="dialog-image" />
+}     
 
 
      <h1>the nicest picture</h1>
