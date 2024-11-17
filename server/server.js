@@ -32,9 +32,9 @@ app.use('/api/get-all-images', require('./routes/imageRoute'));
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back index.html so React Router can handle the routing.
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 mongoose.connection.once("open", () => {
   console.log("connect to db success");
