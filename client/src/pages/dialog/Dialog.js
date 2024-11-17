@@ -16,7 +16,9 @@ const Dialog = () => {
   
   // פונקציה לשליחת הודעה חדשה
   const [sendMessage] = useSendMessageMutation();
-
+useEffect(()=>{
+  console.log(message,"mess");
+},[message])
   useEffect(() => {
    if(dialogs)console.log("dialog",dialogs);
   }, [dialogs]);
@@ -25,13 +27,13 @@ const Dialog = () => {
     if (message.trim()) {
       const newMessage = {
         imageId, // ה-imageId של התמונה שממנה שלוח הודעה
-        message: "message", // טקסט ההודעה
+        message, // טקסט ההודעה
         sender: 'User', // המשלח (תוכל לשנות את זה בעת הצורך)
       };
       try {
         // שליחת ההודעה ל-API
         await sendMessage(newMessage).unwrap();
-        setMessage(""); // איפוס השדה לאחר שליחה
+   setMessage("hello"); // איפוס השדה לאחר שליחה
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -48,12 +50,12 @@ const Dialog = () => {
     const days = Math.floor(hours / 24);
     return `${days} days ago`;
   };
-
+if(!dialogs)return <h1>loading...</h1>
   return (
     <div className="dialog-container">
       <div className="img_container"> src={`.jpg`} 
-     {/* {dialogs.path&& <img src={`/${Number(dialogs.path)}`} alt="dialog-image" />}   */}
-        <h1>the nicest picture</h1>
+      {dialogs &&   <img src={`/${dialogs[0].imageId.path}.JPG`} alt="dialog-image" />
+}        <h1>the nicest picture</h1>
         <h5>by haaron</h5>
       </div>
       <div className="dialog_container">
@@ -64,7 +66,7 @@ const Dialog = () => {
             dialogs.map((dialog, index) => (
               <div className="chat-message" key={index}>
                 <BiMessageDetail className="message-icon" />
-                <h1>{dialog.text}</h1>
+                <h1>{dialog.message}</h1>
                 <div className="time-container">
                   <BiTime className="time-icon" />
                   <p>{timeSince(dialog.createdAt)}</p>
