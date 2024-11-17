@@ -53,9 +53,10 @@ useEffect(()=>{
 if(!dialogs)return <h1>loading...</h1>
   return (
     <div className="dialog-container">
-      <div className="img_container"> src={`.jpg`} 
+      <div className="img_container"> 
       {dialogs &&   <img src={`/${dialogs[0].imageId.path}.JPG`} alt="dialog-image" />
-}        <h1>the nicest picture</h1>
+}   
+     <h1>the nicest picture</h1>
         <h5>by haaron</h5>
       </div>
       <div className="dialog_container">
