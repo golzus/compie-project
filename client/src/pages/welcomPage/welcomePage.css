@@ -1,0 +1,50 @@
+/* Welcome page container */
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: linear-gradient(to bottom right, #ffecd2, #fcb69f); /* רקע גוונים עדינים */
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Main title */
+  .welcome-title {
+    font-size: 3rem;
+    color: #6a4f4b; /* צבע חום פסטלי */
+    font-family: 'Georgia', serif;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); /* הצללה רכה */
+  }
+  
+  /* Subtitle */
+  .welcome-subtitle {
+    font-size: 1.5rem;
+    color: #8e6f68; /* צבע כהה עדין יותר */
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    margin-bottom: 30px;
+  }
+  
+  /* Button to enter the gallery */
+  .enter-gallery-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: #d38372; /* צבע כפתור חם */
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .enter-gallery-button:hover {
+    background-color: #c26a5c; /* כהה יותר בזמן ריחוף */
+    transform: scale(1.05); /* מעט הגדלה */
+  }
+  
