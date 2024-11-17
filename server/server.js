@@ -13,7 +13,16 @@ const PORT = process.env.PORT || 2000;
 connectDB();
 
 // הגדרת CORS פתוח לכולם
-app.use(cors(corsOptions));
+
+const cors = require("cors");
+
+const corsOptions = {
+  origin: /\.onrender\.com$/, // מתיר גישה רק לדומיינים עם סיומת .onrender.com
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // מתיר את השיטות (HTTP methods) הללו
+};
+
+app.use(cors(corsOptions)); // שימוש ב-CORS עם ההגדרות שצוינו
+
 
 // שימוש ב-JSON
 app.use(express.json());
