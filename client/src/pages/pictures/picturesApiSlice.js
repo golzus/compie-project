@@ -1,4 +1,3 @@
-
 import apiSlice from "../../app/apiSlice";
 
 const picturesApiSlice = apiSlice.injectEndpoints({
@@ -13,4 +12,3 @@ const picturesApiSlice = apiSlice.injectEndpoints({
 })
 export const { useGetAllImagesQuery
 } = picturesApiSlice;
-

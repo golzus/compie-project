@@ -1,17 +1,41 @@
-import { useState } from "react";
-import { BiTime, BiMessageDetail } from "react-icons/bi";
-import './dialog.css'
-import { NavLink } from "react-router-dom";
-const Dialog = () => {
-  const [dialogs, setDialogs] = useState([
-    { time: new Date(new Date() - 600000).toISOString(), talking: "Hello" },
-    { time: new Date(new Date() - 1200000).toISOString(), talking: "How are you?" }
-  ]);
-  const [message, setMessage] = useState("");
 
-  const clickFunction = () => {
-    setDialogs([...dialogs, { time: new Date().toISOString(), talking: message }]);
-    setMessage("");
+import { useState, useEffect } from "react";
+import { BiTime, BiMessageDetail } from "react-icons/bi";
+import './dialog.css';
+import { NavLink, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux"; // לא צריך useSelector כאן
+import { useGetMessagesQuery, useSendMessageMutation}from './messagesSlice'
+
+const Dialog = () => {
+  const [message, setMessage] = useState("");
+  const {id: imageId } = useParams(); // שליפת ה-imageId מה-URL
+  const dispatch = useDispatch(); // יצירת הפונקציה dispatch
+
+  // שליפת ההודעות עבור התמונה עם imageId
+  const { data: dialogs, isLoading, isError } = useGetMessagesQuery(imageId);
+  
+  // פונקציה לשליחת הודעה חדשה
+  const [sendMessage] = useSendMessageMutation();
+
+  useEffect(() => {
+   if(dialogs)console.log("dialog",dialogs);
+  }, [dialogs]);
+
+  const clickFunction = async () => {
+    if (message.trim()) {
+      const newMessage = {
+        imageId, // ה-imageId של התמונה שממנה שלוח הודעה
+        message: "message", // טקסט ההודעה
+        sender: 'User', // המשלח (תוכל לשנות את זה בעת הצורך)
+      };
+      try {
+        // שליחת ההודעה ל-API
+        await sendMessage(newMessage).unwrap();
+        setMessage(""); // איפוס השדה לאחר שליחה
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
+    }
   };
 
   const timeSince = (date) => {
@@ -26,36 +50,39 @@ const Dialog = () => {
   };
 
   return (
-    < div className="dialog-container">
-    <div className="img_container">
-      <img src={`/3.jpg`} alt="dialog-image" />
-      <h1>the nicest picture</h1>
-      <h5>by haaron</h5>
+    <div className="dialog-container">
+      <div className="img_container"> src={`.jpg`} 
+     {/* {dialogs.path&& <img src={`/${Number(dialogs.path)}`} alt="dialog-image" />}   */}
+        <h1>the nicest picture</h1>
+        <h5>by haaron</h5>
       </div>
       <div className="dialog_container">
-      <div className="chat-overlay">
-        {dialogs.map((dialog, index) => (
-          <div className="chat-message" key={index}>
-            <BiMessageDetail className="message-icon" />
-            <h1>{dialog.talking}</h1>
-            <div className="time-container">
-              <BiTime className="time-icon" />
-              <p>{timeSince(dialog.time)}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="input-area">
-        <input
-          placeholder="Put in a new message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button onClick={clickFunction} disabled={!message}>
-          Add
-        </button>
-      </div>
-      <NavLink to={'/pictures'}>back to the gallery</NavLink>
+        <div className="chat-overlay">
+          {isLoading && <p>Loading messages...</p>}
+          {isError && <p>Error loading messages</p>}
+          {dialogs &&
+            dialogs.map((dialog, index) => (
+              <div className="chat-message" key={index}>
+                <BiMessageDetail className="message-icon" />
+                <h1>{dialog.text}</h1>
+                <div className="time-container">
+                  <BiTime className="time-icon" />
+                  <p>{timeSince(dialog.createdAt)}</p>
+                </div>
+              </div>
+            ))}
+        </div>
+        <div className="input-area">
+          <input
+            placeholder="Put in a new message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button onClick={clickFunction} disabled={!message}>
+            Add
+          </button>
+        </div>
+        <NavLink to={'/pictures'}>Back to the gallery</NavLink>
       </div>
     </div>
   );
